@@ -1,8 +1,16 @@
 <h1>Clase de Frameworks Frontend con TypeScript</h1>
+<hr>
+<h1>String Interpolation</h1>
 <h2> {{name}} </h2>
 <h2>{{ 3 + 5 }}</h2>
-<hr>
-<h2>String Interpolation</h2>
+
+<p>Hola soy {{person.name}},
+  tengo {{person.age}} años
+  y mi correo es: {{person.email}}
+</p>
+
+<p>El color es: {{colores[2].name}}</p>
+
 <h2>
   {{'Hola'.repeat(4)}}
 </h2>
@@ -16,11 +24,25 @@
 <img [src]="urlImagen" alt="">
 
 <hr>
-<input
-type="text"
-[name]="nombreCampo"
-[placeholder]="nombrePlaceholder"
-(change)="recibirValor($event)"
->
+<input type="text" [name]="nombreCampo" [placeholder]="nombrePlaceholder" (change)="onChangeRecibirValor($event)"
+  (input)="onInputRecibirValor($event)">
 
+<input type="text" [name]="nombreCampo" [placeholder]="nombrePlaceholder" (keydown.shift)="onKeySaludo()">
 
+<h1>Signals</h1>
+
+<h2>{{mascota()}}</h2>
+
+<hr>
+<h1>Estructuras de control </h1>
+
+<div class="user-card" *ngFor="let user of users; index as i" id={{i}}>
+  <img [src]="user.image" [alt]="user.name" class="user-avatar">
+  <h2 class="user-name"> {{user.name}} </h2>
+  <span class="user-position">{{user.position}}</span>
+  <span class="user-email">{{user.email}}</span>
+  <div class="user-status">
+    <span class="status-dot"></span>
+    Activo
+  </div>
+</div>

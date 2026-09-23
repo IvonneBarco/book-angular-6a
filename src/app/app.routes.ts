@@ -2,10 +2,11 @@ import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 
 import { Labs } from './pages/labs/labs'
+import { TodoList } from './todo-list/todo-list';
 export const routes: Routes = [
   {
     path: '',
-    component: Home
+    component: TodoList
   },
   {
     path: 'inicio',
@@ -14,6 +15,10 @@ export const routes: Routes = [
   {
     path: 'labs',
     component: Labs
+  },
+  {
+    path: 'todo',
+    component: TodoList
   }
 ];
 
