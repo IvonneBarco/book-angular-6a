@@ -61,13 +61,13 @@
       <div class="form-group">
         <label for="priority">Prioridad</label>
         <select id="priority" name="priority" (change)="onChangePriority($event)">
-          <option value="baja">Baja</option>
-          <option value="media" selected>Media</option>
-          <option value="alta">Alta</option>
+          <option value="low">Baja</option>
+          <option value="medium" selected>Media</option>
+          <option value="high">Alta</option>
         </select>
       </div>
 
-      <button class="btn btn-primary" type="button">
+      <button class="btn btn-primary" type="button" (click)="addTodo()">
         + Agregar tarea
       </button>
     </form>
@@ -97,9 +97,17 @@
       ========================== -->
     <div class="task-list">
 
-      <article class="task-card" *ngFor="let todo of todos(); index as i">
+      <article
+        class="task-card"
+        *ngFor="let todo of todos(); index as i"
+        [ngClass]="todo.isCompleted ? 'completed' : ''"
+      >
         <div class="task-check">
-          <input type="checkbox" id="task-{{i}}">
+          <input
+          type="checkbox"
+          id="task-{{i}}"
+          [checked]="todo.isCompleted"
+          (change)="onChangeCompleted($event, todo)">
         </div>
 
         <div class="task-content">
@@ -107,7 +115,11 @@
             <label for="task-1" class="task-title">
               {{todo.title}}
             </label>
-            <span class="priority priority-high">{{todo.priority}}</span>
+            <span
+              class="priority"
+              [ngClass]="setColorPriority(todo.priority)">
+              {{todo.priority === 'low' ? 'Baja' : todo.priority === 'medium' ? 'Media' : 'Alta'}}
+            </span>
           </div>
 
           <p class="task-description">
@@ -179,7 +191,7 @@
           <button class="icon-btn" type="button">Editar</button>
           <button class="icon-btn danger" type="button">Eliminar</button>
         </div>
-      </article>
+      </article>-->
 
       <article class="task-card completed">
         <div class="task-check">
@@ -205,7 +217,7 @@
           <button class="icon-btn" type="button">Editar</button>
           <button class="icon-btn danger" type="button">Eliminar</button>
         </div>
-      </article> -->
+      </article>
 
     </div>
   </section>

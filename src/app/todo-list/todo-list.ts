@@ -16,7 +16,7 @@ export class TodoList {
       description: 'Comprar leche, huevos, pan y verduras en el supermercado local.',
       dueDate: '2026-06-05',
       category: 'Personal',
-      priority: 'Alta',
+      priority: 'high',
       isCompleted: false,
     },
     {
@@ -25,7 +25,7 @@ export class TodoList {
       description: 'Analizar las métricas de ventas del último trimestre y preparar el reporte.',
       dueDate: '2026-06-07',
       category: 'Trabajo',
-      priority: 'Urgente',
+      priority: 'high',
       isCompleted: false,
     },
     {
@@ -34,7 +34,7 @@ export class TodoList {
       description: 'Completar 45 minutos de cardio y estiramientos en casa.',
       dueDate: '2026-06-04',
       category: 'Salud',
-      priority: 'Media',
+      priority: 'medium',
       isCompleted: false,
     },
     {
@@ -43,7 +43,7 @@ export class TodoList {
       description: 'Realizar el pago online de la factura de electricidad y agua.',
       dueDate: '2026-06-10',
       category: 'Hogar',
-      priority: 'Alta',
+      priority: 'high',
       isCompleted: false,
     },
     {
@@ -52,7 +52,7 @@ export class TodoList {
       description: 'Subir los últimos proyectos desarrollados a la página web personal.',
       dueDate: '2026-06-15',
       category: 'Estudio',
-      priority: 'Baja',
+      priority: 'low',
       isCompleted: false,
     },
     {
@@ -61,7 +61,7 @@ export class TodoList {
       description: 'Agendar cita de control general anual con el doctor.',
       dueDate: '2026-06-08',
       category: 'Salud',
-      priority: 'Media',
+      priority: 'medium',
       isCompleted: false,
     },
     {
@@ -70,7 +70,7 @@ export class TodoList {
       description: 'Organizar el escritorio, botar papeles innecesarios y limpiar la pantalla.',
       dueDate: '2026-06-06',
       category: 'Hogar',
-      priority: 'Baja',
+      priority: 'low',
       isCompleted: false,
     },
     {
@@ -79,7 +79,7 @@ export class TodoList {
       description: 'Discutir los avances del sprint actual y asignar nuevas tareas.',
       dueDate: '2026-06-04',
       category: 'Trabajo',
-      priority: 'Urgente',
+      priority: 'high',
       isCompleted: false,
     },
     {
@@ -88,7 +88,7 @@ export class TodoList {
       description: 'Avanzar al menos dos capítulos del libro de arquitectura de software.',
       dueDate: '2026-06-12',
       category: 'Personal',
-      priority: 'Baja',
+      priority: 'low',
       isCompleted: true,
     },
     {
@@ -97,26 +97,33 @@ export class TodoList {
       description: 'Cotizar vuelos y hospedaje para las próximas vacaciones de fin de año.',
       dueDate: '2026-06-20',
       category: 'Personal',
-      priority: 'Media',
+      priority: 'medium',
       isCompleted: false,
     },
   ]);
+
+  public tempTodo = {
+    title: '',
+    priority: '',
+  };
 
   constructor() {
     // Al cargar guardamos la lista de tareas en el localStorage
     localStorage.setItem('todos', JSON.stringify(this.todos()));
   }
 
-  addTodo(todoTitle: string) {
-    const newTodo: Todo =  {
+  addTodo() {
+    const newTodo: Todo = {
       id: this.todos().length + 1,
-      title: todoTitle,
+      title: this.tempTodo.title,
       description: '',
       dueDate: '',
       category: 'Personal',
-      priority: 'Baja',
+      priority: this.tempTodo.priority,
       isCompleted: false,
     };
+
+    console.log('.:: New Todo:', newTodo);
     this.todos.update((todos) => [...todos, newTodo]);
     localStorage.setItem('todos', JSON.stringify(this.todos()));
   }
@@ -124,13 +131,36 @@ export class TodoList {
   onChangeTodo(event: Event) {
     const input = event.target as HTMLInputElement;
     const value = input.value;
+    this.tempTodo.title = value;
     console.log(value);
-    this.addTodo(value);
+    // this.addTodo(value);
   }
 
   onChangePriority(event: Event) {
     const select = event.target as HTMLSelectElement;
     const value = select.value;
+    this.tempTodo.priority = value;
     console.log(value);
+  }
+
+  setColorPriority(priority: string) {
+    switch (priority) {
+      case 'low':
+        return 'priority-low';
+      case 'medium':
+        return 'priority-medium';
+      case 'high':
+        return 'priority-high';
+      default:
+        return '';
+    }
+  }
+
+  onChangeCompleted(event:Event, todo: Todo) {
+    const checkbox = event.target as HTMLInputElement;
+    const isChecked = checkbox.checked;
+    todo.isCompleted = isChecked;
+    console.log(`Tarea "${todo.title}" completada: ${isChecked}`);
+    localStorage.setItem('todos', JSON.stringify(this.todos()));
   }
 }
