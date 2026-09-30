@@ -101,4 +101,36 @@ export class TodoList {
       isCompleted: false,
     },
   ]);
+
+  constructor() {
+    // Al cargar guardamos la lista de tareas en el localStorage
+    localStorage.setItem('todos', JSON.stringify(this.todos()));
+  }
+
+  addTodo(todoTitle: string) {
+    const newTodo: Todo =  {
+      id: this.todos().length + 1,
+      title: todoTitle,
+      description: '',
+      dueDate: '',
+      category: 'Personal',
+      priority: 'Baja',
+      isCompleted: false,
+    };
+    this.todos.update((todos) => [...todos, newTodo]);
+    localStorage.setItem('todos', JSON.stringify(this.todos()));
+  }
+
+  onChangeTodo(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    console.log(value);
+    this.addTodo(value);
+  }
+
+  onChangePriority(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    const value = select.value;
+    console.log(value);
+  }
 }
