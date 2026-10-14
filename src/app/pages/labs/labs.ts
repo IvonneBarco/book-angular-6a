@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   selector: 'app-labs',
   styleUrl: './labs.scss',
   templateUrl: './labs.html',
@@ -119,6 +120,20 @@ export class Labs {
     },
   ];
 
+  nameCtrl = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.minLength(3)],
+  });
+
+  colorCtrl = new FormControl();
+  widthCtrl = new FormControl(10);
+
+  constructor() {
+    this.colorCtrl.valueChanges.subscribe((value) => {
+      console.log('Valor seleccionado: ', value);
+    });
+  }
+
   saludo() {
     alert('Buenas tardes 6A');
   }
@@ -143,5 +158,10 @@ export class Labs {
 
   onKeySaludo() {
     alert('Buenas tardes 6A');
+  }
+
+  verForm() {
+    console.log('Es valido: ', this.nameCtrl.valid);
+    console.log('Valor: ', this.nameCtrl.value);
   }
 }
