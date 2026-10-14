@@ -47,7 +47,7 @@
         Por ahora este formulario es estático.
         Más adelante Angular / React controlarán sus valores y eventos.
       -->
-    <form class="task-form">
+    <form class="task-form" [formGroup]="todoForm" >
       <div class="form-group form-group-main">
         <label for="taskTitle">Título</label>
         <input
@@ -55,19 +55,27 @@
         name="taskTitle"
         type="text"
         placeholder="Ej. Preparar presentación"
-        (change)="onChangeTodo($event)">
+        /* (change)="onChangeTodo($event)" */
+        formControlName="title"
+        >
       </div>
 
       <div class="form-group">
         <label for="priority">Prioridad</label>
-        <select id="priority" name="priority" (change)="onChangePriority($event)">
+        <select id="priority" name="priority"
+        /* (change)="onChangePriority($event)" */
+        formControlName="priority"
+        >
           <option value="low">Baja</option>
-          <option value="medium" selected>Media</option>
+          <option value="medium">Media</option>
           <option value="high">Alta</option>
         </select>
       </div>
 
-      <button class="btn btn-primary" type="button" (click)="addTodo()">
+      <button class="btn btn-primary" type="button"
+      /* (click)="addTodo()" */
+      (click)="submitTodoForm()"
+      >
         + Agregar tarea
       </button>
     </form>

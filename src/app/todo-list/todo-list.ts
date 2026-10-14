@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Todo } from '../models/todo.model';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   selector: 'app-todo-list',
   styleUrl: './todo-list.scss',
   templateUrl: './todo-list.html',
@@ -102,6 +103,15 @@ export class TodoList {
     },
   ]);
 
+  // Construcción del formulario
+  private fb = inject(FormBuilder);
+
+  todoForm = this.fb.group({
+    title: ['', [Validators.required, Validators.minLength(3)]],
+    priority: ['', Validators.required],
+    // todos mis campos del formulario
+  })
+
   public tempTodo = {
     title: '',
     priority: '',
@@ -162,5 +172,33 @@ export class TodoList {
     todo.isCompleted = isChecked;
     console.log(`Tarea "${todo.title}" completada: ${isChecked}`);
     localStorage.setItem('todos', JSON.stringify(this.todos()));
+  }
+
+  addTodoForm(todo: any) {
+    const newTodo: Todo = {
+      id: this.todos().length + 1,
+      title: todo.title,
+      description: '',
+      dueDate: '',
+      category: 'Personal',
+      priority: todo.priority,
+      isCompleted: false,
+    };
+
+    console.log('.:: New Todo:', newTodo);
+    this.todos.update((todos) => [...todos, newTodo]);
+    localStorage.setItem('todos', JSON.stringify(this.todos()));
+  }
+
+  submitTodoForm() {
+    //debugger;
+    console.log('.:: Formulario:', this.todoForm);
+    console.log('.::Formulario enviado:', this.todoForm.value);
+    if(this.todoForm.valid) {
+      // agregar la tarea al listado
+      this.addTodoForm(this.todoForm.value);
+    } else {
+      alert('Formulario inválido, por favor complete todos los campos requeridos.');
+    }
   }
 }
